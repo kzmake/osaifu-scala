@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "vscjava.vscode-java-pack",
+    "scalameta.metals",
+    "shardulm94.trailing-spaces",
+    "zxh404.vscode-proto3",
+    "esbenp.prettier-vscode",
+    "editorconfig.editorconfig",
+    "humao.rest-client",
+    "ms-vscode-remote.vscode-remote-extensionpack"
+  ]
+}
