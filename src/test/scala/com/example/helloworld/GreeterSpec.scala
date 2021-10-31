@@ -38,7 +38,7 @@ class GreeterSpec extends AnyWordSpec with BeforeAndAfterAll with Matchers with 
   implicit val clientSystem: ActorSystem[_] = ActorSystem(Behaviors.empty, "GreeterClient")
 
   val client: GreeterServiceClient =
-    GreeterServiceClient(GrpcClientSettings.fromConfig("helloworld.GreeterService"))
+    GreeterServiceClient(GrpcClientSettings.connectToServiceAt("127.0.0.1", 50051).withTls(false))
 
   override def afterAll(): Unit = {
     ActorTestKit.shutdown(clientSystem)

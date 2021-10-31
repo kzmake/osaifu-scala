@@ -3,9 +3,13 @@ SHELL = /bin/bash
 .PHONY: all
 all: fmt lint
 
+.PHONY: compile
+compile:
+	sbt compile
+
 .PHONY: run
 run:
-	sbt "runMain com.example.helloworld.GreeterServer"
+	sbt compile "runMain com.example.helloworld.GreeterServer"
 
 .PHONY: fmt
 fmt:
@@ -17,4 +21,4 @@ lint:
 
 .PHONY: grpc
 grpc:
-	grpcurl --insecure --proto ./src/main/protobuf/helloworld.proto -d '{"name": "alice"}' localhost:8080 GreeterService.SayHello
+	grpcurl -plaintext --proto ./src/main/protobuf/helloworld.proto -d '{"name": "alice"}' localhost:50051 GreeterService.SayHello

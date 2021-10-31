@@ -1,2 +1,2 @@
-# wallet-scala
-DDD + CleanArch + Scala
+# osaifu-scala
+DDD + Clean Architecture + Scala2
