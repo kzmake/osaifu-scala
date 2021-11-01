@@ -13,17 +13,19 @@ import com.typesafe.config.ConfigFactory
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
+import com.typesafe.config.Config
 
 object Application extends App {
-  val conf = ConfigFactory
+  val conf: Config = ConfigFactory
     .parseString("akka.http.server.preview.enable-http2 = on")
     .withFallback(ConfigFactory.defaultApplication())
-  implicit val sys                  = ActorSystem[Nothing](Behaviors.empty, "Osaifu", conf)
-  implicit val ec: ExecutionContext = sys.executionContext
+  implicit val sys: ActorSystem[Nothing] = ActorSystem[Nothing](Behaviors.empty, "Osaifu", conf)
+  implicit val ec: ExecutionContext      = sys.executionContext
 
   val walletService: PartialFunction[HttpRequest, Future[HttpResponse]] =
     WalletServiceHandler.partial(new WalletServiceImpl())
-  val reflectionService = ServerReflection.partial(List(WalletService))
+  val reflectionService: PartialFunction[HttpRequest, Future[HttpResponse]] =
+    ServerReflection.partial(List(WalletService))
   val serviceHandlers: HttpRequest => Future[HttpResponse] =
     ServiceHandler.concatOrNotFound(walletService, reflectionService)
 
