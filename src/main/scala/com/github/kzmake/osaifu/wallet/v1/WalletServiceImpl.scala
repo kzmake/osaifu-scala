@@ -1,12 +1,8 @@
 package com.github.kzmake.osaifu.wallet.v1
 
-import akka.actor.typed.ActorSystem
-
 import scala.concurrent.Future
 
-class WalletServiceImpl(system: ActorSystem[_]) extends WalletService {
-  private implicit val sys: ActorSystem[_] = system
-
+class WalletServiceImpl() extends WalletService {
   override def create(request: CreateRequest): Future[CreateResponse] = {
     Future.successful(
       CreateResponse(Some(Wallet(id = "dummyid", owner = "alice", balance = "2000")))

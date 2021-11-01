@@ -9,9 +9,6 @@ import com.typesafe.config.ConfigFactory
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
-import scala.util.Failure
-import scala.util.Success
-import scala.concurrent.duration._
 
 object WalletServer {
 
@@ -25,28 +22,17 @@ object WalletServer {
 }
 
 class WalletServer(system: ActorSystem[_]) {
-
   def run(): Future[Http.ServerBinding] = {
     implicit val sys                  = system
     implicit val ec: ExecutionContext = system.executionContext
 
     val service: HttpRequest => Future[HttpResponse] =
-      WalletServiceHandler(new WalletServiceImpl(system))
+      WalletServiceHandler(new WalletServiceImpl())
 
-    val bound: Future[Http.ServerBinding] = Http(system)
-      .newServerAt(interface = "0.0.0.0", port = 50051)
-      .bind(service)
-      .map(_.addToCoordinatedShutdown(hardTerminationDeadline = 10.seconds))
+    val binding = Http().newServerAt("127.0.0.1", 50051).bind(service)
 
-    bound.onComplete {
-      case Success(binding) =>
-        val address = binding.localAddress
-        println(s"gRPC server bound to ${address.getHostString}: ${address.getPort}")
-      case Failure(ex) =>
-        println("Failed to bind gRPC endpoint, terminating system", ex)
-        system.terminate()
-    }
+    binding.foreach { binding => println(s"gRPC server bound to: ${binding.localAddress}") }
 
-    bound
+    binding
   }
 }

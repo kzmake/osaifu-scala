@@ -20,18 +20,20 @@ class WalletServiceImplSpec
 
   implicit val patience: PatienceConfig = PatienceConfig(scaled(5.seconds), scaled(100.millis))
 
-  implicit val system: ActorSystem[_] = testKit.system
+  implicit val sys: ActorSystem[_] = testKit.system
 
-  val service = new WalletServiceImpl(system)
+  val service = new WalletServiceImpl()
 
   override def afterAll(): Unit = {
     testKit.shutdownTestKit()
   }
 
   "WalletServiceImpl" should {
-    "reply to single request" in {
-      val reply = service.create(CreateRequest("alice"))
-      reply.futureValue should ===(CreateResponse(Some(Wallet(id = "dummyid", owner = "alice", balance = "2000"))))
+    "response to single request" in {
+      val response = service.create(CreateRequest(owner = "alice"))
+      response.futureValue should ===(
+        CreateResponse(Some(Wallet(id = "dummyid", owner = "alice", balance = "2000")))
+      )
     }
   }
 }

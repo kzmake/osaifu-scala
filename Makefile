@@ -9,7 +9,7 @@ compile:
 
 .PHONY: run
 run:
-	sbt compile "runMain com.github.kzmake.osaifu.wallet.v1.WalletServer"
+	sbt compile "runMain com.github.kzmake.osaifu.Application"
 
 .PHONY: fmt
 fmt:
