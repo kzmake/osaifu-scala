@@ -1,5 +1,4 @@
-//#full-example
-package com.example.helloworld
+package com.github.kzmake.osaifu.wallet.v1
 
 import akka.actor.testkit.typed.scaladsl.ActorTestKit
 import akka.actor.typed.ActorSystem
@@ -11,7 +10,7 @@ import org.scalatest.wordspec.AnyWordSpec
 
 import scala.concurrent.duration._
 
-class GreeterServiceImplSpec
+class WalletServiceImplSpec
     extends AnyWordSpec
     with BeforeAndAfterAll
     with Matchers
@@ -23,16 +22,16 @@ class GreeterServiceImplSpec
 
   implicit val system: ActorSystem[_] = testKit.system
 
-  val service = new GreeterServiceImpl(system)
+  val service = new WalletServiceImpl(system)
 
   override def afterAll(): Unit = {
     testKit.shutdownTestKit()
   }
 
-  "GreeterServiceImpl" should {
+  "WalletServiceImpl" should {
     "reply to single request" in {
-      val reply = service.sayHello(HelloRequest("Bob"))
-      reply.futureValue should ===(HelloReply("Hello, Bob"))
+      val reply = service.create(CreateRequest("alice"))
+      reply.futureValue should ===(CreateResponse(Some(Wallet(id = "dummyid", owner = "alice", balance = "2000"))))
     }
   }
 }

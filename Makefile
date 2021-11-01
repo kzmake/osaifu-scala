@@ -9,7 +9,7 @@ compile:
 
 .PHONY: run
 run:
-	sbt compile "runMain com.example.helloworld.GreeterServer"
+	sbt compile "runMain com.github.kzmake.osaifu.wallet.v1.WalletServer"
 
 .PHONY: fmt
 fmt:
@@ -21,4 +21,7 @@ lint:
 
 .PHONY: grpc
 grpc:
-	grpcurl -plaintext --proto ./src/main/protobuf/helloworld.proto -d '{"name": "alice"}' localhost:50051 GreeterService.SayHello
+	@grpcurl -plaintext --proto ./api/osaifu/wallet/v1/wallet.proto -d '{"owner": "alice"}' localhost:50051 osaifu.wallet.v1.WalletService/Create
+	@grpcurl -plaintext --proto ./api/osaifu/wallet/v1/wallet.proto -d '{"id": "dummyid"}' localhost:50051 osaifu.wallet.v1.WalletService/Get
+	@grpcurl -plaintext --proto ./api/osaifu/wallet/v1/wallet.proto localhost:50051 osaifu.wallet.v1.WalletService/List
+	@grpcurl -plaintext --proto ./api/osaifu/wallet/v1/wallet.proto -d '{"id": "dummyid"}' localhost:50051 osaifu.wallet.v1.WalletService/Delete

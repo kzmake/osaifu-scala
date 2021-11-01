@@ -1,6 +1,4 @@
-package com.example.helloworld
-
-//#import
+package com.github.kzmake.osaifu.wallet.v1
 
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
@@ -14,29 +12,26 @@ import scala.concurrent.Future
 import scala.util.Failure
 import scala.util.Success
 import scala.concurrent.duration._
-//#import
 
-//#server
-object GreeterServer {
+object WalletServer {
 
   def main(args: Array[String]): Unit = {
-    // important to enable HTTP/2 in ActorSystem's config
     val conf = ConfigFactory
       .parseString("akka.http.server.preview.enable-http2 = on")
       .withFallback(ConfigFactory.defaultApplication())
-    val system = ActorSystem[Nothing](Behaviors.empty, "GreeterServer", conf)
-    new GreeterServer(system).run()
+    val system = ActorSystem[Nothing](Behaviors.empty, "WalletServer", conf)
+    new WalletServer(system).run()
   }
 }
 
-class GreeterServer(system: ActorSystem[_]) {
+class WalletServer(system: ActorSystem[_]) {
 
   def run(): Future[Http.ServerBinding] = {
     implicit val sys                  = system
     implicit val ec: ExecutionContext = system.executionContext
 
     val service: HttpRequest => Future[HttpResponse] =
-      GreeterServiceHandler(new GreeterServiceImpl(system))
+      WalletServiceHandler(new WalletServiceImpl(system))
 
     val bound: Future[Http.ServerBinding] = Http(system)
       .newServerAt(interface = "0.0.0.0", port = 50051)
