@@ -14,23 +14,21 @@ import com.typesafe.config.ConfigFactory
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
-object Application {
-  def main(args: Array[String]): Unit = {
-    val conf = ConfigFactory
-      .parseString("akka.http.server.preview.enable-http2 = on")
-      .withFallback(ConfigFactory.defaultApplication())
-    implicit val sys                  = ActorSystem[Nothing](Behaviors.empty, "Osaifu", conf)
-    implicit val ec: ExecutionContext = sys.executionContext
+object Application extends App {
+  val conf = ConfigFactory
+    .parseString("akka.http.server.preview.enable-http2 = on")
+    .withFallback(ConfigFactory.defaultApplication())
+  implicit val sys                  = ActorSystem[Nothing](Behaviors.empty, "Osaifu", conf)
+  implicit val ec: ExecutionContext = sys.executionContext
 
-    val walletService: PartialFunction[HttpRequest, Future[HttpResponse]] =
-      WalletServiceHandler.partial(new WalletServiceImpl())
-    val reflectionService = ServerReflection.partial(List(WalletService))
-    val serviceHandlers: HttpRequest => Future[HttpResponse] =
-      ServiceHandler.concatOrNotFound(walletService, reflectionService)
+  val walletService: PartialFunction[HttpRequest, Future[HttpResponse]] =
+    WalletServiceHandler.partial(new WalletServiceImpl())
+  val reflectionService = ServerReflection.partial(List(WalletService))
+  val serviceHandlers: HttpRequest => Future[HttpResponse] =
+    ServiceHandler.concatOrNotFound(walletService, reflectionService)
 
-    Http()
-      .newServerAt("0.0.0.0", 50051)
-      .bind(serviceHandlers)
-      .foreach { binding => println(s"gRPC server bound to: ${binding.localAddress}") }
-  }
+  Http()
+    .newServerAt("0.0.0.0", 50051)
+    .bind(serviceHandlers)
+    .foreach { binding => println(s"gRPC server bound to: ${binding.localAddress}") }
 }
