@@ -7,9 +7,13 @@ all: fmt lint
 compile:
 	sbt compile
 
+.PHONY: test
+test: compile
+	sbt test
+
 .PHONY: run
-run:
-	sbt compile "runMain com.github.kzmake.osaifu.Application"
+run: compile
+	sbt run
 
 .PHONY: fmt
 fmt:
