@@ -3,7 +3,7 @@ syntax = "proto3";
 package osaifu.wallet.v1;
 
 option java_multiple_files = true;
-option java_package = "com.github.kzmake.osaifu.wallet.v1";
+option java_package = "api.osaifu.wallet.v1";
 
 service WalletService {
   rpc Create(CreateRequest) returns (CreateResponse);

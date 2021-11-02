@@ -1,6 +1,7 @@
 package com.github.kzmake.osaifu
 
-import com.github.kzmake.osaifu.wallet.v1._
+import api.osaifu.wallet.v1._
+import grpc.wallet.v1.WalletServiceImpl
 
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpRequest
@@ -15,7 +16,7 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 import com.typesafe.config.Config
 
-object Application extends App {
+object Main extends App {
   val conf: Config = ConfigFactory
     .parseString("akka.http.server.preview.enable-http2 = on")
     .withFallback(ConfigFactory.defaultApplication())

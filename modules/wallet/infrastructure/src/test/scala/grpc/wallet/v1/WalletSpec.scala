@@ -1,4 +1,6 @@
-package com.github.kzmake.osaifu.wallet.v1
+package grpc.wallet.v1
+
+import api.osaifu.wallet.v1._
 
 import akka.actor.testkit.typed.scaladsl.ActorTestKit
 import akka.actor.typed.ActorSystem
@@ -17,7 +19,6 @@ import scala.concurrent.duration._
 import scala.concurrent.Future
 
 class WalletSpec extends AnyWordSpec with BeforeAndAfterAll with Matchers with ScalaFutures {
-
   implicit val patience: PatienceConfig = PatienceConfig(scaled(5.seconds), scaled(100.millis))
 
   val conf: Config = ConfigFactory

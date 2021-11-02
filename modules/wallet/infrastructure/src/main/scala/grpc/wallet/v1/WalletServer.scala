@@ -1,4 +1,6 @@
-package com.github.kzmake.osaifu.wallet.v1
+package grpc.wallet.v1
+
+import api.osaifu.wallet.v1._
 
 import akka.actor.typed.ActorSystem
 import akka.http.scaladsl.Http
@@ -10,7 +12,7 @@ import scala.concurrent.Future
 
 class WalletServer(system: ActorSystem[_]) {
   def run(): Future[Http.ServerBinding] = {
-    implicit val sys                  = system
+    implicit val sys: ActorSystem[_]  = system
     implicit val ec: ExecutionContext = system.executionContext
 
     val service: HttpRequest => Future[HttpResponse] =

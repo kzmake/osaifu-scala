@@ -1,4 +1,6 @@
-package com.github.kzmake.osaifu.wallet.v1
+package grpc.wallet.v1
+
+import api.osaifu.wallet.v1._
 
 import scala.concurrent.Future
 
