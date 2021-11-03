@@ -31,12 +31,11 @@ class WalletServiceImplSpec
   }
 
   "WalletServiceImpl" should {
-    "response to single request" in {
-      val response = service.create(CreateRequest(owner = "alice"))
-      response.futureValue should ===(
+    "OKなレスポンスを返す" in {
+      val res = service.create(CreateRequest(owner = "alice"))
+      res.futureValue should ===(
         CreateResponse(Some(Wallet(id = "dummyid", owner = "alice", balance = "2000")))
       )
     }
   }
 }
-//#full-example

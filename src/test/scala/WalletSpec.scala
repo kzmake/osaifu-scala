@@ -1,4 +1,4 @@
-package grpc.wallet.v1
+package com.github.kzmake.osaifu
 
 import api.osaifu.wallet.v1._
 
@@ -42,10 +42,10 @@ class WalletSpec extends AnyWordSpec with BeforeAndAfterAll with Matchers with S
     testKit.shutdownTestKit()
   }
 
-  "WalletService" should {
-    "reply to single request" in {
-      val reply = client.create(CreateRequest(owner = "alice"))
-      reply.futureValue should ===(
+  "osaifu.wallet.v1/Create" should {
+    "OKなレスポンスを返す" in {
+      val response = client.create(CreateRequest(owner = "alice"))
+      response.futureValue should ===(
         CreateResponse(Some(Wallet(id = "dummyid", owner = "alice", balance = "2000")))
       )
     }

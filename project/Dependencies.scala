@@ -21,6 +21,11 @@ object Logback {
   val classic = "ch.qos.logback" % "logback-classic" % version
 }
 
+object ScalaLogging {
+  val version = "3.9.4"
+  val core    = "com.typesafe.scala-logging" %% "scala-logging" % version
+}
+
 object Logstash {
   val version        = "6.6"
   val logbackEncoder = "net.logstash.logback" % "logstash-logback-encoder" % version

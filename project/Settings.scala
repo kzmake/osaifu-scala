@@ -29,6 +29,7 @@ object Settings {
       // "-Ywarn-unused-import"
     ),
     libraryDependencies ++= Seq(
+      ScalaLogging.core,
       Logback.classic,
       Logstash.logbackEncoder,
       Jackson.scala,
