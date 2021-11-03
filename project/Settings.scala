@@ -24,12 +24,14 @@ object Settings {
       // Warn when nullary methods return Unit.
       // "-Ywarn-nullary-unit",
       // Warn when numerics are widened.
-      "-Ywarn-numeric-widen",
+      "-Ywarn-numeric-widen"
       // Warn when imports are unused.
       // "-Ywarn-unused-import"
     ),
     libraryDependencies ++= Seq(
       Logback.classic,
+      Logstash.logbackEncoder,
+      Jackson.scala,
       ScalaTest.core % Test
     )
   )
@@ -42,7 +44,6 @@ object Settings {
       Akka.stream,
       Akka.discovery,
       Akka.pki,
-      Logback.classic,
       Akka.actorTestkitTyped % Test,
       Akka.streamTestkit     % Test
     )
