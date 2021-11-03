@@ -13,6 +13,11 @@ ThisBuild / scalacOptions ++= Seq(
   "-Wunused:imports" // Scala 2.x only, required by `RemoveUnused`
 )
 
+Docker / packageName := s"${baseName}/scala"
+Docker / dockerRepository := Some("ghcr.io/kzmake")
+Docker / maintainer := "kzmake <kamake.i3a@gmail.com>"
+Docker / dockerExposedPorts := List(50051)
+
 lazy val api = (project in file("api"))
   .settings(
     name := s"${baseName}-api"
@@ -34,6 +39,7 @@ lazy val root = (project in file("."))
   .settings(
     name := baseName
   )
+  .enablePlugins(JavaAppPackaging)
   .settings(infrastructureSettings, coreSettings)
   .dependsOn(walletInfrastructure)
   .aggregate(walletInfrastructure)

@@ -1,0 +1,32 @@
+---
+apiVersion: skaffold/v2beta24
+kind: Config
+metadata:
+  name: app
+build:
+  local:
+    useBuildkit: true
+  artifacts:
+    - image: ghcr.io/kzmake/osaifu/scala
+      custom:
+        buildCommand: ./build.sh
+        dependencies:
+          paths:
+            - build.sbt
+            - "**/*.proto"
+            - "**/*.scala"
+            - "**/*.sbt"
+          ignore:
+            - "**/target"
+deploy:
+  kustomize:
+    paths:
+      - manifest/overlays/localhost
+portForward:
+  - resourceType: service
+    resourceName: app
+    namespace: default
+    port: 50051
+    localPort: 50051
+profiles:
+  - name: localhost
