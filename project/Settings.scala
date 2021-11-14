@@ -37,6 +37,12 @@ object Settings {
     )
   )
 
+  val protoSettings: Def.SettingsDefinition = Seq(
+    libraryDependencies ++= Seq(
+      GoogleApiGrpc.common % "protobuf-src" intransitive ()
+    )
+  )
+
   val infrastructureSettings: Def.SettingsDefinition = Seq(
     libraryDependencies ++= Seq(
       AkkaHttp.http,

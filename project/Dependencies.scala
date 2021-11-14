@@ -1,5 +1,10 @@
 import sbt._
 
+object GoogleApiGrpc {
+  val version = "2.6.0"
+  val common  = "com.google.api.grpc" % "proto-google-common-protos" % version
+}
+
 object Akka {
   val version           = "2.6.16"
   val actorTyped        = "com.typesafe.akka" %% "akka-actor-typed"         % version

@@ -13,9 +13,9 @@ ThisBuild / scalacOptions ++= Seq(
   "-Wunused:imports" // Scala 2.x only, required by `RemoveUnused`
 )
 
-Docker / packageName := s"${baseName}/scala"
-Docker / dockerRepository := Some("ghcr.io/kzmake")
-Docker / maintainer := "kzmake <kamake.i3a@gmail.com>"
+Docker / packageName        := s"${baseName}/scala/app"
+Docker / dockerRepository   := Some("ghcr.io/kzmake")
+Docker / maintainer         := "kzmake <kamake.i3a@gmail.com>"
 Docker / dockerExposedPorts := List(50051)
 
 lazy val api = (project in file("api"))
@@ -23,8 +23,9 @@ lazy val api = (project in file("api"))
     name := s"${baseName}-api"
   )
   .enablePlugins(AkkaGrpcPlugin)
+  .settings(protoSettings)
   .settings(
-    Compile / PB.protoSources += baseDirectory.value / "osaifu/wallet/v1"
+    Compile / PB.protoSources += baseDirectory.value / "osaifu"
   )
 
 lazy val walletInfrastructure = (project in file("modules/wallet/infrastructure"))
