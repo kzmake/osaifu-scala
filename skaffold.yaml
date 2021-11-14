@@ -7,7 +7,7 @@ build:
   local:
     useBuildkit: true
   artifacts:
-    - image: ghcr.io/kzmake/osaifu/scala
+    - image: ghcr.io/kzmake/osaifu/scala/app
       custom:
         buildCommand: ./build.sh
         dependencies:
@@ -18,11 +18,20 @@ build:
             - "**/*.sbt"
           ignore:
             - "**/target"
+    - image: ghcr.io/kzmake/osaifu/scala/gateway
+      context: ./gateway
+      docker:
+        dockerfile: ./gateway/Dockerfile
 deploy:
   kustomize:
     paths:
       - manifest/overlays/localhost
 portForward:
+  - resourceType: service
+    resourceName: app
+    namespace: default
+    port: 80
+    localPort: 8080
   - resourceType: service
     resourceName: app
     namespace: default
