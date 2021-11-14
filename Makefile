@@ -1,7 +1,7 @@
 SHELL = /bin/bash
 
 .PHONY: all
-all: fmt lint
+all: proto fmt lint
 
 .PHONY: compile
 compile:
@@ -14,6 +14,10 @@ test: compile
 .PHONY: run
 run: compile
 	sbt run
+
+.PHONY: proto
+proto:
+	buf generate
 
 .PHONY: fmt
 fmt:
