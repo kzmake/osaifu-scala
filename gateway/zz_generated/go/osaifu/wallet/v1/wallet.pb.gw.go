@@ -2,11 +2,11 @@
 // source: osaifu/wallet/v1/wallet.proto
 
 /*
-Package v1 is a reverse proxy.
+Package walletv1 is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package v1
+package walletv1
 
 import (
 	"context"

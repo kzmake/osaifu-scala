@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package osaifu.wallet.v1;
 
-option go_package = "github.com/kzmake/osaifu-scala/api/osaifu/wallet/v1";
 option java_multiple_files = true;
 option java_package = "api.osaifu.wallet.v1";
 

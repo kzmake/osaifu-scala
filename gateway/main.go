@@ -19,7 +19,7 @@ import (
 	"golang.org/x/xerrors"
 	"google.golang.org/grpc"
 
-	pb "github.com/kzmake/osaifu-scala/gateway/gen/go/osaifu/wallet/v1"
+	pb "github.com/kzmake/osaifu-scala/gateway/zz_generated/go/osaifu/wallet/v1"
 )
 
 type Env struct {
