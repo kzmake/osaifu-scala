@@ -5,3 +5,4 @@ deps:
 build:
   excludes:
     - target
+    - zz_generated

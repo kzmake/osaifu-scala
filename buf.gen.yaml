@@ -2,7 +2,9 @@ version: v1
 managed:
   enabled: true
   go_package_prefix:
-    default: github.com/kzmake/osaifu-scala/backend/gateway/zz_generated
+    default: github.com/kzmake/osaifu-scala/api/zz_generated/go
+    except:
+      - buf.build/googleapis/googleapis
 plugins:
   - name: go
     out: gateway/zz_generated/go

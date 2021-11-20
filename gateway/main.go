@@ -32,8 +32,6 @@ const prefix = "GATEWAY"
 var env Env
 
 func init() {
-	// log.Logger = zerolog.New(zerolog.ConsoleWriter{Out: os.Stdout}).With().Timestamp().Logger()
-
 	if err := envconfig.Process(prefix, &env); err != nil {
 		log.Fatal().Msgf("%+v", err)
 	}
