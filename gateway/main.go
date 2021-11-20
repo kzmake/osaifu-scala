@@ -24,7 +24,7 @@ import (
 )
 
 type Env struct {
-	GateawayAddress string `default:"0.0.0.0:80"`
+	GateawayAddress string `default:"0.0.0.0:8080"`
 	ServiceAddress  string `default:"localhost:50051"`
 }
 

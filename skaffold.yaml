@@ -30,7 +30,7 @@ portForward:
   - resourceType: service
     resourceName: app
     namespace: default
-    port: 80
+    port: 8080
     localPort: 8080
   - resourceType: service
     resourceName: app
