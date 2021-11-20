@@ -18,6 +18,7 @@ import (
 	"golang.org/x/sync/errgroup"
 	"golang.org/x/xerrors"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/encoding/protojson"
 
 	pb "github.com/kzmake/osaifu-scala/gateway/zz_generated/go/osaifu/wallet/v1"
 )
@@ -59,7 +60,19 @@ func newGatewayServer(ctx context.Context) (*http.Server, error) {
 	))
 	r.Use(gin.Recovery())
 
-	mux := runtime.NewServeMux()
+	mux := runtime.NewServeMux(
+		runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.HTTPBodyMarshaler{
+			Marshaler: &runtime.JSONPb{
+				MarshalOptions: protojson.MarshalOptions{
+					UseProtoNames: true,
+				},
+				UnmarshalOptions: protojson.UnmarshalOptions{
+					DiscardUnknown: true,
+				},
+			},
+		}),
+	)
+
 	if err := pb.RegisterWalletServiceHandlerFromEndpoint(ctx, mux, env.ServiceAddress, []grpc.DialOption{grpc.WithInsecure()}); err != nil {
 		return nil, xerrors.Errorf("Failed to register handler: %w", err)
 	}
