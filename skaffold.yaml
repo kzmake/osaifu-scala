@@ -8,14 +8,15 @@ build:
     useBuildkit: true
   artifacts:
     - image: ghcr.io/kzmake/osaifu/scala/app
+      context: ./backend
       custom:
         buildCommand: ./build.sh
         dependencies:
           paths:
-            - build.sbt
-            - "**/*.proto"
-            - "**/*.scala"
-            - "**/*.sbt"
+            - "build.sbt"
+            - "../**/*.proto"
+            - "../**/*.scala"
+            - "../**/*.sbt"
           ignore:
             - "**/target"
     - image: ghcr.io/kzmake/osaifu/scala/gateway

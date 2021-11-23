@@ -25,7 +25,7 @@ lazy val api = (project in file("api"))
   .enablePlugins(AkkaGrpcPlugin)
   .settings(protoSettings)
   .settings(
-    Compile / PB.protoSources += baseDirectory.value / "osaifu"
+    Compile / PB.protoSources += file("../api/osaifu")
   )
 
 lazy val walletInfrastructure = (project in file("modules/wallet/infrastructure"))
