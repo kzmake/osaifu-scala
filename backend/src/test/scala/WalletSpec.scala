@@ -46,7 +46,9 @@ class WalletSpec extends AnyWordSpec with BeforeAndAfterAll with Matchers with S
     "OKなレスポンスを返す" in {
       val response = client.create(CreateRequest(owner = "alice"))
       response.futureValue should ===(
-        CreateResponse(Some(Wallet(id = "dummyid", owner = "alice", balance = "2000")))
+        CreateResponse(
+          Some(Wallet(id = response.futureValue.getWallet.id, owner = "alice", balance = "1000"))
+        )
       )
     }
   }

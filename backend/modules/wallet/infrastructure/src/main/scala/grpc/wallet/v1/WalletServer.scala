@@ -2,6 +2,10 @@ package grpc.wallet.v1
 
 import api.osaifu.wallet.v1._
 
+import memory.WalletMemoryRepository
+import repository.WalletRepository
+import interactor.CreateWalletInteractor
+import controller.wallet.v1.WalletServiceController
 import akka.actor.typed.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpRequest
@@ -15,8 +19,11 @@ class WalletServer(system: ActorSystem[_]) {
     implicit val sys: ActorSystem[_]  = system
     implicit val ec: ExecutionContext = system.executionContext
 
+    val walletRepository: WalletRepository = new WalletMemoryRepository()
+    val create: CreateWalletInteractor     = new CreateWalletInteractor(walletRepository)
+
     val service: HttpRequest => Future[HttpResponse] =
-      WalletServiceHandler(new WalletServiceImpl())
+      WalletServiceHandler(new WalletServiceController(create))
 
     val binding = Http().newServerAt("127.0.0.1", 50051).bind(service)
 

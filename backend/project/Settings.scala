@@ -33,6 +33,8 @@ object Settings {
       Logback.classic,
       Logstash.logbackEncoder,
       Jackson.scala,
+      Eff.core,
+      Cats.core,
       ScalaTest.core % Test
     )
   )

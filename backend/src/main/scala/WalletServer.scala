@@ -1,8 +1,11 @@
 package com.github.kzmake.osaifu
 
 import api.osaifu.wallet.v1._
-import grpc.wallet.v1.WalletServiceImpl
 
+import memory.WalletMemoryRepository
+import repository.WalletRepository
+import interactor.CreateWalletInteractor
+import controller.wallet.v1.WalletServiceController
 import akka.actor.typed.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpRequest
@@ -16,10 +19,13 @@ class WalletServer(system: ActorSystem[_]) {
     implicit val sys: ActorSystem[_]  = system
     implicit val ec: ExecutionContext = system.executionContext
 
-    val service: HttpRequest => Future[HttpResponse] =
-      WalletServiceHandler(new WalletServiceImpl())
+    val walletRepository: WalletRepository = new WalletMemoryRepository()
+    val create: CreateWalletInteractor     = new CreateWalletInteractor(walletRepository)
 
-    val binding = Http().newServerAt("127.0.0.1", 50051).bind(service)
+    val service: HttpRequest => Future[HttpResponse] =
+      WalletServiceHandler(new WalletServiceController(create))
+
+    val binding = Http().newServerAt("127.0.0.1", 50001).bind(service)
 
     binding.foreach { binding => println(s"gRPC server bound to: ${binding.localAddress}") }
 

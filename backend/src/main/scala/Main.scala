@@ -1,8 +1,11 @@
 package com.github.kzmake.osaifu
 
 import api.osaifu.wallet.v1._
-import grpc.wallet.v1.WalletServiceImpl
 
+import memory.WalletMemoryRepository
+import repository.WalletRepository
+import interactor.CreateWalletInteractor
+import controller.wallet.v1.WalletServiceController
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpRequest
 import akka.http.scaladsl.model.HttpResponse
@@ -11,10 +14,10 @@ import akka.grpc.scaladsl.ServiceHandler
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import com.typesafe.config.ConfigFactory
+import com.typesafe.config.Config
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
-import com.typesafe.config.Config
 
 object Main extends App {
   val conf: Config = ConfigFactory
@@ -23,8 +26,11 @@ object Main extends App {
   implicit val sys: ActorSystem[Nothing] = ActorSystem[Nothing](Behaviors.empty, "Osaifu", conf)
   implicit val ec: ExecutionContext      = sys.executionContext
 
+  val walletRepository: WalletRepository = new WalletMemoryRepository()
+  val create: CreateWalletInteractor     = new CreateWalletInteractor(walletRepository)
+
   val walletService: PartialFunction[HttpRequest, Future[HttpResponse]] =
-    WalletServiceHandler.partial(new WalletServiceImpl())
+    WalletServiceHandler.partial(new WalletServiceController(create))
   val reflectionService: PartialFunction[HttpRequest, Future[HttpResponse]] =
     ServerReflection.partial(List(WalletService))
   val serviceHandlers: HttpRequest => Future[HttpResponse] =

@@ -41,6 +41,16 @@ object Jackson {
   val scala   = "com.fasterxml.jackson.module" %% "jackson-module-scala" % version
 }
 
+object Eff {
+  val version = "5.10.0"
+  val core   = "org.atnos" %% "eff" % version
+}
+
+object Cats {
+  val version = "2.1.1"
+  val core   = "org.typelevel" %% "cats-core" % version
+}
+
 object ScalaTest {
   val version = "3.2.10"
   val core    = "org.scalatest" %% "scalatest" % version

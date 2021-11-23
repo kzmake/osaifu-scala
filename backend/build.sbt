@@ -28,13 +28,36 @@ lazy val api = (project in file("api"))
     Compile / PB.protoSources += file("../api/osaifu")
   )
 
+lazy val walletDomain = (project in file("modules/wallet/domain"))
+  .settings(
+    name := s"${baseName}-wallet-domain"
+  )
+  .settings(infrastructureSettings, coreSettings)
+
+
+lazy val walletUseCase = (project in file("modules/wallet/usecase"))
+  .settings(
+    name := s"${baseName}-wallet-usecase"
+  )
+  .settings(infrastructureSettings, coreSettings)
+  .dependsOn(walletDomain)
+  .aggregate(walletDomain)
+
+lazy val walletInterface = (project in file("modules/wallet/interface"))
+  .settings(
+    name := s"${baseName}-wallet-interface"
+  )
+  .settings(infrastructureSettings, coreSettings)
+  .dependsOn(api, walletUseCase)
+  .aggregate(api, walletUseCase)
+
 lazy val walletInfrastructure = (project in file("modules/wallet/infrastructure"))
   .settings(
     name := s"${baseName}-wallet-infrastructure"
   )
   .settings(infrastructureSettings, coreSettings)
-  .dependsOn(api)
-  .aggregate(api)
+  .dependsOn(api, walletInterface)
+  .aggregate(api, walletInterface)
 
 lazy val root = (project in file("."))
   .settings(
