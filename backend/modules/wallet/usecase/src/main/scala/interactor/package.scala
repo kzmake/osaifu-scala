@@ -13,7 +13,7 @@ package object usecase {
   type _useCaseEither[R] = UseCaseEither |= R
 
   implicit class FutureOptionOps[T](maybeFutureValue: Future[Option[T]])(implicit
-      ex: ExecutionContext
+      ec: ExecutionContext
   ) {
     def toUseCaseErrorIfNotExists(message: String): Future[T] =
       maybeFutureValue.transformWith {
@@ -23,7 +23,7 @@ package object usecase {
       }
   }
 
-  implicit class FutureOps[T](futureValue: Future[T])(implicit ex: ExecutionContext) {
+  implicit class FutureOps[T](futureValue: Future[T])(implicit ec: ExecutionContext) {
     def raiseIfFutureFailed(message: String): Future[T] =
       futureValue.transformWith {
         case Success(value) => Future.successful(value)
