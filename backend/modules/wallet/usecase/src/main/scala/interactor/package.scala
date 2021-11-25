@@ -18,7 +18,7 @@ package object usecase {
     def toUseCaseErrorIfNotExists(message: String): Future[T] =
       maybeFutureValue.transformWith {
         case Success(Some(value)) => Future.successful(value)
-        case Success(None)        => Future.failed(UseCaseError.create(s"${message}は見つかりませんでした"))
+        case Success(None)        => Future.failed(UseCaseError.create(s"${message}の取得に失敗しました"))
         case Failure(exception)   => Future.failed(exception)
       }
   }
@@ -28,7 +28,7 @@ package object usecase {
       futureValue.transformWith {
         case Success(value) => Future.successful(value)
         case Failure(exception) =>
-          Future.failed(UseCaseError.create(s"${message}のデータ更新に失敗しました: ${exception.getMessage}"))
+          Future.failed(UseCaseError.create(s"${message}の処理に失敗しました: ${exception.getMessage}"))
       }
 
     def toEff[R: _future]: Eff[R, T] = fromFuture(futureValue)
