@@ -5,6 +5,7 @@ import api.osaifu.wallet.v1._
 import memory.WalletMemoryRepository
 import repository.WalletRepository
 import interactor.CreateWalletInteractor
+import interactor.DeleteWalletInteractor
 import controller.wallet.v1.WalletServiceController
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpRequest
@@ -28,9 +29,10 @@ object Main extends App {
 
   val walletRepository: WalletRepository = new WalletMemoryRepository()
   val create: CreateWalletInteractor     = new CreateWalletInteractor(walletRepository)
+  val delete: DeleteWalletInteractor     = new DeleteWalletInteractor(walletRepository)
 
   val walletService: PartialFunction[HttpRequest, Future[HttpResponse]] =
-    WalletServiceHandler.partial(new WalletServiceController(create))
+    WalletServiceHandler.partial(new WalletServiceController(create, delete))
   val reflectionService: PartialFunction[HttpRequest, Future[HttpResponse]] =
     ServerReflection.partial(List(WalletService))
   val serviceHandlers: HttpRequest => Future[HttpResponse] =

@@ -7,6 +7,10 @@ import repository.WalletRepository
 import scala.concurrent.{ExecutionContext, Future}
 
 class WalletMemoryRepository()(implicit val ec: ExecutionContext) extends WalletRepository {
+  override def save(entity: Wallet): Future[Wallet] =
+    for {
+      _ <- Future.successful(entity)
+    } yield entity
 
   override def get(id: WalletId): Future[Option[Wallet]] = {
     for {
@@ -14,7 +18,7 @@ class WalletMemoryRepository()(implicit val ec: ExecutionContext) extends Wallet
     } yield fakeWallet
   }
 
-  override def save(entity: Wallet): Future[Wallet] =
+  override def delete(entity: Wallet): Future[Wallet] =
     for {
       _ <- Future.successful(entity)
     } yield entity

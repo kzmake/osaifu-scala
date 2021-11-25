@@ -3,7 +3,8 @@ package controller.wallet.v1
 import api.osaifu.wallet.v1._
 
 import controller.controller.FutureEitherStack
-import interactor.CreateWalletInteractor
+import interactor.{CreateWalletInteractor, DeleteWalletInteractor}
+import port.{CreateWalletInputData, DeleteWalletInputData}
 import org.atnos.eff.ExecutorServices
 import org.atnos.eff.concurrent.Scheduler
 import org.atnos.eff.syntax.all.toEitherEffectOps
@@ -13,14 +14,15 @@ import error.UseCaseError
 import scala.concurrent.{ExecutionContext, Future}
 
 class WalletServiceController(
-    create: CreateWalletInteractor
+    create: CreateWalletInteractor,
+    delete: DeleteWalletInteractor
 )(implicit ec: ExecutionContext)
     extends WalletService {
   override def create(_request: CreateRequest): Future[CreateResponse] = {
     implicit val scheduler: Scheduler = ExecutorServices.schedulerFromGlobalExecutionContext
 
     create
-      .program[FutureEitherStack]()
+      .program[FutureEitherStack](CreateWalletInputData.apply())
       .runEither[UseCaseError]
       .runAsync
       .flatMap {
@@ -29,9 +31,9 @@ class WalletServiceController(
             CreateResponse(
               Some(
                 Wallet(
-                  id = out.id.value.toString(),
+                  id = out.wallet.id.value.toString(),
                   owner = "alice",
-                  balance = out.balance.value.toString()
+                  balance = out.wallet.balance.value.toString()
                 )
               )
             )
@@ -56,6 +58,16 @@ class WalletServiceController(
   }
 
   override def delete(request: DeleteRequest): Future[DeleteResponse] = {
+    implicit val scheduler: Scheduler = ExecutorServices.schedulerFromGlobalExecutionContext
+
+    delete
+      .program[FutureEitherStack](DeleteWalletInputData(id = request.id))
+      .runEither[UseCaseError]
+      .runAsync
+      .flatMap {
+        case Right(_) => Future.successful(DeleteResponse())
+        case Left(e)  => Future.failed(new Exception())
+      }
     Future.successful(DeleteResponse())
   }
 }
