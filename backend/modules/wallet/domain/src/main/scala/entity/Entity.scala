@@ -1,8 +1,8 @@
 package entity
 
-import vo.Id
+import vo.EntityId
 
-trait Entity[ID <: Id] {
+trait Entity[ID <: EntityId] {
   val id: ID
 
   override def equals(obj: Any): Boolean =

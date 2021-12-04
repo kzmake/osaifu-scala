@@ -1,6 +1,7 @@
 package interactor
 
-import entity.Wallet
+import entity._
+import vo._
 import repository.WalletRepository
 import port.{CreateWalletPort, CreateWalletInputData, CreateWalletOutputData}
 import org.atnos.eff.Eff
@@ -11,9 +12,12 @@ import scala.concurrent.ExecutionContext
 
 class CreateWalletInteractor(walletRepository: WalletRepository)(implicit ec: ExecutionContext)
     extends CreateWalletPort {
-  def program[R: _future: _useCaseEither](_in: CreateWalletInputData): Eff[R, CreateWalletOutputData] =
+  def program[R: _future: _useCaseEither](in: CreateWalletInputData): Eff[R, CreateWalletOutputData] =
     for {
-      createdWallet <- walletRepository.save(Wallet.apply()).raiseIfFutureFailed("wallet").toEff
-      gotWallet     <- walletRepository.get(createdWallet.id).toUseCaseErrorIfNotExists("wallet").toEff
+      createdWallet <- walletRepository
+        .save(Wallet.apply(owner = Owner("alice"), balance = Money(1000)))
+        .raiseIfFutureFailed("wallet")
+        .toEff
+      gotWallet <- walletRepository.get(createdWallet.id).toUseCaseErrorIfNotExists("wallet").toEff
     } yield CreateWalletOutputData.apply(gotWallet)
 }

@@ -1,8 +1,8 @@
 package memory
 
-import entity.Wallet
-import vo.WalletId
-import repository.WalletRepository
+import entity._
+import vo._
+import repository._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -14,7 +14,7 @@ class WalletMemoryRepository()(implicit val ec: ExecutionContext) extends Wallet
 
   override def get(id: WalletId): Future[Option[Wallet]] = {
     for {
-      fakeWallet <- Future.successful(Some(Wallet.apply()))
+      fakeWallet <- Future.successful(Some(Wallet.apply(owner = Owner("alice"), balance = Money(1000))))
     } yield fakeWallet
   }
 

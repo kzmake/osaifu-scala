@@ -1,9 +1,9 @@
 package entity
 
-import vo.Money
-import vo.WalletId
+import vo._
 
 case class Wallet(
-    id: WalletId = WalletId.newId(),
-    balance: Money = Money(1000)
+    id: WalletId = WalletId.apply(),
+    owner: Owner,
+    balance: Money
 ) extends Entity[WalletId] {}

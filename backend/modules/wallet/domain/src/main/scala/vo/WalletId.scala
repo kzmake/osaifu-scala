@@ -2,8 +2,8 @@ package vo
 
 import java.util.UUID
 
-case class WalletId(value: String) extends AnyVal with Id
+case class WalletId(value: String) extends EntityId
 
 object WalletId {
-  def newId(): WalletId = WalletId(UUID.randomUUID().toString)
+  def apply(): WalletId = WalletId.apply(UUID.randomUUID().toString)
 }
