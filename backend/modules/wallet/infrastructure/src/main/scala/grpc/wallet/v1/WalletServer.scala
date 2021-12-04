@@ -1,12 +1,12 @@
-package grpc.wallet.v1
+package infrastructure.grpc.wallet.v1
 
 import api.osaifu.wallet.v1._
 
-import memory.WalletMemoryRepository
-import repository.WalletRepository
-import interactor.CreateWalletInteractor
-import interactor.DeleteWalletInteractor
-import controller.wallet.v1.WalletServiceController
+import infrastructure.memory._
+import domain.repository._
+import usecase.interactor._
+import interface.controller.wallet.v1._
+
 import akka.actor.typed.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpRequest

@@ -1,7 +1,7 @@
-package repository
+package domain.repository
 
-import entity.Wallet
-import vo.WalletId
+import domain.entity._
+import domain.vo._
 
 import scala.concurrent.Future
 

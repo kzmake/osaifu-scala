@@ -1,14 +1,15 @@
-package interactor
+package usecase.eff
 
-import error.DomainError
-import error.UseCaseError
+import domain.error.DomainError
+import usecase.error.UseCaseError
+
 import org.atnos.eff.future.{_future, fromFuture}
 import org.atnos.eff.{|=, either, Eff}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
-package object usecase {
+object Usecase {
   type UseCaseEither[T]  = Either[UseCaseError, T]
   type _useCaseEither[R] = UseCaseEither |= R
 

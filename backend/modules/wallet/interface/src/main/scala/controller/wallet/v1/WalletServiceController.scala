@@ -1,15 +1,16 @@
-package controller.wallet.v1
+package interface.controller.wallet.v1
 
 import api.osaifu.wallet.v1._
 
-import controller.controller.FutureEitherStack
-import interactor.{CreateWalletInteractor, DeleteWalletInteractor}
-import port.{CreateWalletInputData, DeleteWalletInputData}
+import interface.controller.controller._
+import usecase.interactor._
+import usecase.port._
+import usecase.error.UseCaseError
+
 import org.atnos.eff.ExecutorServices
 import org.atnos.eff.concurrent.Scheduler
 import org.atnos.eff.syntax.all.toEitherEffectOps
 import org.atnos.eff.syntax.future.toFutureOps
-import error.UseCaseError
 
 import scala.concurrent.{ExecutionContext, Future}
 

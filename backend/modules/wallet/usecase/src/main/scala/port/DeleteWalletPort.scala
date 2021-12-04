@@ -1,4 +1,4 @@
-package port
+package usecase.port
 
 trait DeleteWalletPort extends Port[DeleteWalletInputData, DeleteWalletOutputData]
 

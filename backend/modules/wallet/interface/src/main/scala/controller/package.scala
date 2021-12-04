@@ -1,7 +1,8 @@
-package controller
+package interface.controller
+
+import usecase.eff.Usecase.UseCaseEither
 
 import org.atnos.eff.{Fx, TimedFuture}
-import interactor.usecase.UseCaseEither
 
 package object controller {
   type FutureEitherStack = Fx.fx2[TimedFuture, UseCaseEither]

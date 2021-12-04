@@ -2,11 +2,11 @@ package com.github.kzmake.osaifu
 
 import api.osaifu.wallet.v1._
 
-import memory.WalletMemoryRepository
-import repository.WalletRepository
-import interactor.CreateWalletInteractor
-import interactor.DeleteWalletInteractor
-import controller.wallet.v1.WalletServiceController
+import infrastructure.memory._
+import domain.repository._
+import usecase.interactor._
+import interface.controller.wallet.v1._
+
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpRequest
 import akka.http.scaladsl.model.HttpResponse

@@ -1,4 +1,4 @@
-package vo
+package domain.vo
 
 import scala.math.BigDecimal
 

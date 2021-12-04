@@ -1,8 +1,8 @@
-package memory
+package infrastructure.memory
 
-import entity._
-import vo._
-import repository._
+import domain.entity._
+import domain.vo._
+import domain.repository._
 
 import scala.concurrent.{ExecutionContext, Future}
 

@@ -1,3 +1,3 @@
-package vo
+package domain.vo
 
 trait ValueObject

@@ -1,12 +1,13 @@
-package interactor
+package usecase.interactor
 
-import entity._
-import vo._
-import repository.WalletRepository
-import port.{CreateWalletPort, CreateWalletInputData, CreateWalletOutputData}
+import domain.entity._
+import domain.vo._
+import domain.repository._
+import usecase.port._
+import usecase.eff.Usecase._
+
 import org.atnos.eff.Eff
 import org.atnos.eff.future._future
-import interactor.usecase.{_useCaseEither, FutureOps, FutureOptionOps}
 
 import scala.concurrent.ExecutionContext
 

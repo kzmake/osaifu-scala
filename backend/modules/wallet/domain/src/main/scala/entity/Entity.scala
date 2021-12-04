@@ -1,6 +1,6 @@
-package entity
+package domain.entity
 
-import vo.EntityId
+import domain.vo._
 
 trait Entity[ID <: EntityId] {
   val id: ID

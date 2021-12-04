@@ -1,6 +1,6 @@
-package entity
+package domain.entity
 
-import vo._
+import domain.vo._
 
 case class Wallet(
     id: WalletId = WalletId.apply(),

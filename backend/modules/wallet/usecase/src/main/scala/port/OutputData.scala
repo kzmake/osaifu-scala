@@ -1,3 +1,3 @@
-package port
+package usecase.port
 
 trait OutputData extends Any

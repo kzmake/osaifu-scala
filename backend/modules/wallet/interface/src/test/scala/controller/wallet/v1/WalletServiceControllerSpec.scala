@@ -1,4 +1,4 @@
-package controller.wallet.v1
+package interface.controller.wallet.v1
 
 // import api.osaifu.wallet.v1._
 

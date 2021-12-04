@@ -1,4 +1,4 @@
-package error
+package domain.error
 
 import cats.data.NonEmptyList
 

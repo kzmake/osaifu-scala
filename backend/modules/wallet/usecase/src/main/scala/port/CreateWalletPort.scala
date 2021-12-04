@@ -1,6 +1,6 @@
-package port
+package usecase.port
 
-import entity.Wallet
+import domain.entity._
 
 trait CreateWalletPort extends Port[CreateWalletInputData, CreateWalletOutputData]
 
