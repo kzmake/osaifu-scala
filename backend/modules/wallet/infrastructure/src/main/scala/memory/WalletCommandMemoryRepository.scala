@@ -6,7 +6,7 @@ import domain.repository._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WalletMemoryRepository()(implicit val ec: ExecutionContext) extends WalletRepository {
+class WalletCommandMemoryRepository()(implicit val ec: ExecutionContext) extends WalletRepository {
   override def save(entity: Wallet): Future[Wallet] =
     for {
       _ <- Future.successful(entity)

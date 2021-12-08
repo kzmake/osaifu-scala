@@ -3,6 +3,9 @@ package interface.controller.wallet.v1
 import api.osaifu.wallet.v1._
 
 import interface.controller.controller._
+import query.interactor._
+import query.port._
+import query.error.QueryError
 import usecase.interactor._
 import usecase.port._
 import usecase.error.UseCaseError
@@ -15,6 +18,9 @@ import org.atnos.eff.syntax.future.toFutureOps
 import scala.concurrent.{ExecutionContext, Future}
 
 class WalletServiceController(
+    // query
+    list: ListWalletsInteractor,
+    // command
     create: CreateWalletInteractor,
     delete: DeleteWalletInteractor
 )(implicit ec: ExecutionContext)
@@ -23,7 +29,7 @@ class WalletServiceController(
     implicit val scheduler: Scheduler = ExecutorServices.schedulerFromGlobalExecutionContext
 
     create
-      .program[FutureEitherStack](CreateWalletInputData.apply())
+      .program[CommandFutureEitherStack](CreateWalletInputData.apply())
       .runEither[UseCaseError]
       .runAsync
       .flatMap {
@@ -48,21 +54,28 @@ class WalletServiceController(
   }
 
   override def list(request: ListRequest): Future[ListResponse] = {
-    Future.successful(
-      ListResponse(
-        Seq(
-          Wallet(id = "dummyid1", owner = "alice", balance = "2000"),
-          Wallet(id = "dummyid2", owner = "bob", balance = "5000")
-        )
-      )
-    )
+    implicit val scheduler: Scheduler = ExecutorServices.schedulerFromGlobalExecutionContext
+
+    list
+      .program[QueryFutureEitherStack](ListWalletsInputData.apply())
+      .runEither[QueryError]
+      .runAsync
+      .flatMap {
+        case Right(out) =>
+          Future.successful(
+            ListResponse(
+              out.wallets.map(x => Wallet(id = x.id, owner = x.owner, balance = x.balance))
+            )
+          )
+        case Left(e) => Future.failed(new Exception())
+      }
   }
 
   override def delete(request: DeleteRequest): Future[DeleteResponse] = {
     implicit val scheduler: Scheduler = ExecutorServices.schedulerFromGlobalExecutionContext
 
     delete
-      .program[FutureEitherStack](DeleteWalletInputData(id = request.id))
+      .program[CommandFutureEitherStack](DeleteWalletInputData(id = request.id))
       .runEither[UseCaseError]
       .runAsync
       .flatMap {

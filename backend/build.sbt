@@ -34,7 +34,6 @@ lazy val walletDomain = (project in file("modules/wallet/domain"))
   )
   .settings(infrastructureSettings, coreSettings)
 
-
 lazy val walletUseCase = (project in file("modules/wallet/usecase"))
   .settings(
     name := s"${baseName}-wallet-usecase"
@@ -43,13 +42,19 @@ lazy val walletUseCase = (project in file("modules/wallet/usecase"))
   .dependsOn(walletDomain)
   .aggregate(walletDomain)
 
+lazy val walletQuery = (project in file("modules/wallet/query"))
+  .settings(
+    name := s"${baseName}-wallet-query"
+  )
+  .settings(infrastructureSettings, coreSettings)
+
 lazy val walletInterface = (project in file("modules/wallet/interface"))
   .settings(
     name := s"${baseName}-wallet-interface"
   )
   .settings(infrastructureSettings, coreSettings)
-  .dependsOn(api, walletUseCase)
-  .aggregate(api, walletUseCase)
+  .dependsOn(api, walletUseCase, walletQuery)
+  .aggregate(api, walletUseCase, walletQuery)
 
 lazy val walletInfrastructure = (project in file("modules/wallet/infrastructure"))
   .settings(

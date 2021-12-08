@@ -3,7 +3,9 @@ package com.github.kzmake.osaifu
 import api.osaifu.wallet.v1._
 
 import infrastructure.memory._
-import domain.repository._
+import domain.repository.{WalletRepository => WalletCommandRepository}
+import query.repository.{WalletRepository => WalletQueryRepository}
+import query.interactor._
 import usecase.interactor._
 import interface.controller.wallet.v1._
 
@@ -27,12 +29,15 @@ object Main extends App {
   implicit val sys: ActorSystem[Nothing] = ActorSystem[Nothing](Behaviors.empty, "Osaifu", conf)
   implicit val ec: ExecutionContext      = sys.executionContext
 
-  val walletRepository: WalletRepository = new WalletMemoryRepository()
-  val create: CreateWalletInteractor     = new CreateWalletInteractor(walletRepository)
-  val delete: DeleteWalletInteractor     = new DeleteWalletInteractor(walletRepository)
+  val walletQueryRepository: WalletQueryRepository = new WalletQueryMemoryRepository()
+  val list: ListWalletsInteractor                  = new ListWalletsInteractor(walletQueryRepository)
+
+  val walletCommandRepository: WalletCommandRepository = new WalletCommandMemoryRepository()
+  val create: CreateWalletInteractor                   = new CreateWalletInteractor(walletCommandRepository)
+  val delete: DeleteWalletInteractor                   = new DeleteWalletInteractor(walletCommandRepository)
 
   val walletService: PartialFunction[HttpRequest, Future[HttpResponse]] =
-    WalletServiceHandler.partial(new WalletServiceController(create, delete))
+    WalletServiceHandler.partial(new WalletServiceController(list, create, delete))
   val reflectionService: PartialFunction[HttpRequest, Future[HttpResponse]] =
     ServerReflection.partial(List(WalletService))
   val serviceHandlers: HttpRequest => Future[HttpResponse] =
